@@ -21,6 +21,16 @@ function whatIsHappening() {
 }
 $email = $street = $streetnumber = $city = $zipcode =  "";
 
+$streetnumber = filter_input(INPUT_GET, 'streetnumber', FILTER_SANITIZE_NUMBER_INT);
+$zipcode =  filter_input(INPUT_GET, 'zipcode', FILTER_SANITIZE_NUMBER_INT);
+
+
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo("$email is a valid email address");
+} else {
+    echo("$email is not a valid email address");
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = test_input($_POST["Email"]);
     $street = test_input($_POST["Street"]);
@@ -43,6 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $emailErr = "Email is required";
         } else {
             $email = test_input($_POST["Email"]);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailErr = "Invalid email format";
+            }
         }
     }
 
