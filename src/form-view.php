@@ -21,11 +21,14 @@
             </li>
         </ul>
     </nav>
+    <span class="text-success"><?php if(isset($correctForm)) {echo $correctForm;} ?></span>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
                 <input type="text" id="email" name="email" class="form-control"/>
+                <span class="error text-danger"><?php echo $emailErr;?></span>
+                <span class="error text-danger"><?php echo $invalidEmail;?></span>
             </div>
             <div></div>
         </div>
@@ -37,20 +40,26 @@
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
                     <input type="text" name="street" id="street" class="form-control">
+                    <span class="error text-danger"><?php echo $streetErr;?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
                     <input type="text" id="streetnumber" name="streetnumber" class="form-control">
+                    <span class="error text-danger"><?php echo $streetnumberErr;?></span>
+                    <span class="error text-danger"><?php echo $streetnumberIntErr;?></span>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
                     <input type="text" id="city" name="city" class="form-control">
+                    <span class="error text-danger"><?php echo $cityErr;?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
                     <input type="text" id="zipcode" name="zipcode" class="form-control">
+                    <span class="error text-danger"><?php echo $zipcodeErr;?></span>
+                    <span class="error text-danger"><?php echo $zipcodeIntErr;?></span>
                 </div>
             </div>
         </fieldset>

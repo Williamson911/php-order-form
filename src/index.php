@@ -46,45 +46,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr =  "";
-    $email = $street = $streetnumber = $city = $zipcode =  "";
+    $invalidEmail = "";
+    $streetnumberIntErr = $zipcodeIntErr = "";
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["Email"])) {
-            $emailErr = "Email is required";
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        if (empty($_POST['email'])) {
+            $emailErr = 'Email is required';
         } else {
-            $email = test_input($_POST["Email"]);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Invalid email format";
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $email = $_POST['email'];}
+            else {
+                $invalidEmail = 'Invalid email format';
+            }
+        }
+
+
+        if (empty($_POST['street'])) {
+            $streetErr = '*  Street is required';
+        } else {
+            $street = $_POST['street'];
+        }
+
+        if (empty($_POST['streetnumber'])) {
+            $streetnumberErr = '*  Street number is required';
+        } else {
+            if(filter_var($_POST['streetnumber'], FILTER_VALIDATE_INT)) {
+            $streetnumber = $_POST['streetnumber'];
+        } else {
+             $streetnumberIntErr = "* Street number must be a number";
+            }
+        }
+
+
+        if (empty($_POST['city'])) {
+            $cityErr = 'City is required';
+        } else {
+            $city = $_POST['city'];
+        }
+
+        if (empty($_POST['zipcode'])) {
+            $zipcodeErr = 'Zip code is required';
+        }  else {
+            if(filter_var($_POST['zipcode'], FILTER_VALIDATE_INT)) {
+                $zipcode = $_POST['zipcode'];
+            } else {
+                $zipcodeIntErr = "* Zipcode must be a number";
             }
         }
     }
 
-        if (empty($_POST["Street"])) {
-            $streetErr = "Street is required";
-        } else {
-            $street = test_input($_POST["Street"]);
-        }
-
-        if (empty($_POST["Street number"])) {
-            $streetnumberErr = "Street number is required";
-        } else {
-            $streetnumber = test_input($_POST["Street number"]);
-        }
-
-        if (empty($_POST["City"])) {
-            $cityErr = "City is required";
-        } else {
-            $city = test_input($_POST["City"]);
-        }
-
-        if (empty($_POST["Zip code"])) {
-            $zipcodeErr = "Zip code is required";
-        } else {
-            $zipcode = test_input($_POST["Zip code"]);
-        }
-
-
-
+if(isset($email, $street, $streetnumber, $city, $zipcode)) {
+    $correctForm = "Your order placed with this email '$email' has been sent to the following address: $street $streetnumber, $city $zipcode";
+}
 
 //your products with their price.
 $products = [
