@@ -133,7 +133,7 @@ if (isset($email, $street, $streetNum, $city, $zipcode, $totalValue, $deliveryTi
     $correctForm = "Your order placed with the email '$email' for &euro; $totalValue has been sent to the following address: $street $streetNum, $city $zipcode. Delivery is expected at: $deliveryTime";
 
 // session
-    $_SESSION["address"] = "$street $streetNum, $city $zipcode";
+    $_SESSION["address"] = "$street $streetNumber, $city $zipcode";
 }
 
 $totalValue = 0;
