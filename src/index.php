@@ -47,7 +47,7 @@ $invalidEmail = $streetNumberIntErr = $zipcodeIntErr = "";
             if(filter_var($_POST['streetnumber'], FILTER_VALIDATE_INT)) {
             $streetNumber = $_POST['streetnumber'];
         } else {
-             $streetnumberIntErr = "* Street number must be a number";
+             $streetNumberIntErr = "* Street number must be a number";
             }
         }
 
