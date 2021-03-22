@@ -14,19 +14,19 @@
     <nav>
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link active" href="?food=1">Order pizzas</a>
+                <a class="nav-link active" href="?food=pizzas">Order pizzas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="?food=0">Order drinks</a>
+                <a class="nav-link" href="?food=drinks">Order drinks</a>
             </li>
         </ul>
     </nav>
-    <span class="text-success"><?php if(isset($correctForm)) {echo $correctForm;} ?></span>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>>
+    <span class="text-success pt-3 pb-3"><?php if(isset($correctForm)) {echo $correctForm;} ?></span>
+    <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control"/>
+                <input type="text" id="email" name="email" class="form-control" value="<?php if(isset($email)) {echo $email;} ?>"/>
                 <span class="error text-danger"><?php echo $emailErr;?></span>
                 <span class="error text-danger"><?php echo $invalidEmail;?></span>
             </div>
@@ -39,25 +39,25 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control">
+                    <input type="text" name="street" id="street" class="form-control" value="<?php if(isset($street)) {echo $street;} ?>">
                     <span class="error text-danger"><?php echo $streetErr;?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
-                    <span class="error text-danger"><?php echo $streetnumberErr;?></span>
-                    <span class="error text-danger"><?php echo $streetnumberIntErr;?></span>
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php if(isset($streetNum)) {echo $streetNum;} ?>">
+                    <span class="error text-danger"><?php echo $streetNumberErr;?></span>
+                    <span class="error text-danger"><?php echo $streetNumberIntErr;?></span>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control">
+                    <input type="text" id="city" name="city" class="form-control" value="<?php if(isset($city)) {echo $city;} ?>">
                     <span class="error text-danger"><?php echo $cityErr;?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php if(isset($zipcode)) {echo $zipcode;} ?>">
                     <span class="error text-danger"><?php echo $zipcodeErr;?></span>
                     <span class="error text-danger"><?php echo $zipcodeIntErr;?></span>
                 </div>
@@ -67,21 +67,21 @@
         <fieldset>
             <legend>Products</legend>
             <?php foreach ($products AS $i => $product): ?>
-                <label>
-                    <input type="checkbox" value="1" name="products[<?php echo $i ?>]"/> <?php echo $product['name'] ?> -
-                    &euro; <?php echo number_format($product['price'], 2) ?></label><br />
+                <label class="text-content">
+                    <input class="checkbox" type="checkbox" value="1" onclick="isCheckbooxCheched()" name="products[<?php echo $i ?>]"/> <?php echo $product['name'] ?> -
+                    &euro; <?php echo number_format($product['price'], 2) ?></label><br/>
             <?php endforeach; ?>
         </fieldset>
-        
+
         <label>
-            <input type="checkbox" name="express_delivery" value="5" /> 
-            Express delivery (+ 5 EUR) 
+            <input type="checkbox" name="express_delivery" id="express" value="5" />
+            Express delivery (+ 5 EUR)
         </label>
-            
+
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 
-    <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.</footer>
+    <footer>You already ordered <strong id="target">&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.</footer>
 </div>
 
 <style>
@@ -89,5 +89,6 @@
         text-align: center;
     }
 </style>
+<script src="./index.js"></script>
 </body>
 </html>

@@ -2,12 +2,7 @@
 //this line makes PHP behave in a more strict way
 declare(strict_types=1);
 
-//we are going to use session variables so we need to enable sessions
 session_start();
-$_SESSION['City'] = 'Liège';
-$_SESSION['Street'] = 'rue Mulhouse';
-$_SESSION['Streetnumber'] = '36';
-$_SESSION['Zipcode'] = '4020';
 
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
@@ -19,59 +14,38 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
-$email = $street = $streetnumber = $city = $zipcode =  "";
 
-$streetnumber = filter_input(INPUT_GET, 'streetnumber', FILTER_SANITIZE_NUMBER_INT);
-$zipcode =  filter_input(INPUT_GET, 'zipcode', FILTER_SANITIZE_NUMBER_INT);
+$totalValue = 0;
 
-
-if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo("$email is a valid email address");
-} else {
-    echo("$email is not a valid email address");
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = test_input($_POST["Email"]);
-    $street = test_input($_POST["Street"]);
-    $streetnumber = test_input($_POST["Street number"]);
-    $city = test_input($_POST["City"]);
-    $zipcode = test_input($_POST["Zip code"]);}
-
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-
-    $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr =  "";
-    $invalidEmail = "";
-    $streetnumberIntErr = $zipcodeIntErr = "";
+$email = $street = $streetNumber = $city = $zipcode = "";
+$emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
+$invalidEmail = $streetNumberIntErr = $zipcodeIntErr = "";
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
         if (empty($_POST['email'])) {
-            $emailErr = 'Email is required';
+            $emailErr = "* Email is required";
         } else {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $email = $_POST['email'];}
             else {
-                $invalidEmail = 'Invalid email format';
-            }
+                $invalidEmail = "* " . $_POST['email'] . " Invalid email";
+
+             }
         }
 
 
         if (empty($_POST['street'])) {
-            $streetErr = '*  Street is required';
+            $streetErr = "*  Street is required";
         } else {
             $street = $_POST['street'];
         }
 
         if (empty($_POST['streetnumber'])) {
-            $streetnumberErr = '*  Street number is required';
+            $streetNumberErr = "*  Street number is required";
         } else {
             if(filter_var($_POST['streetnumber'], FILTER_VALIDATE_INT)) {
-            $streetnumber = $_POST['streetnumber'];
+            $streetNumber = $_POST['streetnumber'];
         } else {
              $streetnumberIntErr = "* Street number must be a number";
             }
@@ -79,13 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         if (empty($_POST['city'])) {
-            $cityErr = 'City is required';
+            $cityErr = "* City is required";
         } else {
             $city = $_POST['city'];
         }
 
         if (empty($_POST['zipcode'])) {
-            $zipcodeErr = 'Zip code is required';
+            $zipcodeErr = "* Zip code is required";
         }  else {
             if(filter_var($_POST['zipcode'], FILTER_VALIDATE_INT)) {
                 $zipcode = $_POST['zipcode'];
@@ -95,12 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-if(isset($email, $street, $streetnumber, $city, $zipcode)) {
-    $correctForm = "Your order placed with this email '$email' has been sent to the following address: $street $streetnumber, $city $zipcode";
-}
 
 //your products with their price.
-$products = [
+$pizzas = [
     ['name' => 'Margherita', 'price' => 8],
     ['name' => 'Hawaï', 'price' => 8.5],
     ['name' => 'Salami pepper', 'price' => 10],
@@ -112,7 +83,7 @@ $products = [
     ['name' => 'Scampi', 'price' => 11.5]
 ];
 
-$products = [
+$drinks = [
     ['name' => 'Water', 'price' => 1.8],
     ['name' => 'Sparkling water', 'price' => 1.8],
     ['name' => 'Cola', 'price' => 2],
@@ -121,8 +92,56 @@ $products = [
     ['name' => 'Ice-tea', 'price' => 2.2],
 ];
 
+
+//pizzas as deault
+$products = $pizzas;
+
+if (isset($_GET['food'])) {
+    $value = $_GET['food'];
+    if ($value == 'drinks') {
+        $products = $drinks;
+    }
+};
+
+// Time
+$localHour = date_create('now', new DateTimeZone('Europe/Brussels'))->format('G:i');
+
+// check if express delivery is enabled
+$standardDeliveryTime = date("G:i", strtotime('+1 hour', strtotime($localHour)));
+$expressDeliveryTime = date("G:i", strtotime('+30 minutes', strtotime($localHour)));
+
+if (isset($_POST['express_delivery'])) {
+    $deliveryTime = $expressDeliveryTime;
+    $totalValue += 5;
+} else {
+    $deliveryTime = $standardDeliveryTime;
+}
+
+// total price
+if (isset($_POST['products'])) {
+    $selectedProducts = $_POST['products'];
+
+    foreach ($selectedProducts AS $i => $choice) {
+        $choice = $products[$i]['price'];
+        $totalValue += $choice;
+    }
+    $_SESSION['total-price'] = $totalValue;
+}
+
+// correct form
+if (isset($email, $street, $streetNum, $city, $zipcode, $totalValue, $deliveryTime)) {
+    $correctForm = "Your order placed with the email '$email' for &euro; $totalValue has been sent to the following address: $street $streetNum, $city $zipcode. Delivery is expected at: $deliveryTime";
+
+// session
+    $_SESSION["address"] = "$street $streetNum, $city $zipcode";
+}
+
 $totalValue = 0;
 
+        if (isset($email, $street, $streetNum, $city, $zipcode, $totalValue, $deliveryTime)) {
+            $correctForm = "Your order placed with the email '$email' for &euro; $totalValue has been sent to the following address: $street $streetNum, $city $zipcode. Delivery is expected at: $deliveryTime";
 
+            $_SESSION["address"] = "$street $streetNum, $city $zipcode";
+        }
 
 require 'form-view.php';
