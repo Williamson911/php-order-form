@@ -129,7 +129,7 @@ if (isset($_POST['products'])) {
 }
 
 // correct form
-if (isset($email, $street, $streetNum, $city, $zipcode, $totalValue, $deliveryTime)) {
+if (isset($email, $street, $streetNumber, $city, $zipcode, $totalValue, $deliveryTime)) {
     $correctForm = "Your order placed with the email '$email' for &euro; $totalValue has been sent to the following address: $street $streetNumber, $city $zipcode. Delivery is expected at: $deliveryTime";
 
 // session
