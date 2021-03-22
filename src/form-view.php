@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php if(isset($streetNum)) {echo $streetNum;} ?>">
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php if(isset($streetNumber)) {echo $streetNumber;} ?>">
                     <span class="error text-danger"><?php echo $streetNumberErr;?></span>
                     <span class="error text-danger"><?php echo $streetNumberIntErr;?></span>
                 </div>
