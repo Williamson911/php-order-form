@@ -130,9 +130,25 @@ if (isset($_POST['products'])) {
 
 // correct form
 if (isset($email, $street, $streetNumber, $city, $zipcode, $totalValue, $deliveryTime)) {
-    $correctForm = "Your order placed with the email '$email' for &euro; $totalValue has been sent to the following address: $street $streetNumber, $city $zipcode. Delivery is expected at: $deliveryTime";
 
 // session
     $_SESSION["address"] = "$street $streetNumber, $city $zipcode";
+
+    if ($totalValue == 0) {
+        $noOrder = "No product ordered. Invalid order.";
+    } elseif ($totalValue == 5 && isset($_POST['express_delivery'])) {
+        $noOrder = "No product ordered. Invalid order.";
+    } else {
+        $correctForm = "Your order placed with the email <strong>'$email'</strong> has been completed. </br>You payed <strong>&euro; $totalValue</strong></br> Your order has been sent to the following address: <strong>$street n° $streetNumber, $city $zipcode</strong>.</br>Delivery is expected at: <strong>$deliveryTime</strong>";
+    }
 }
+
+// sets cookie for total revenue counter
+if (!isset($_COOKIE['totalSpent'])) {
+    setcookie('totalSpent', '0', time() + 5*24*3600);
+} else {
+    $value = $_COOKIE['totalSpent'] + $totalValue;
+    setcookie('totalSpent', (string) $value, time() + 5*24*3600);
+}
+
 require 'form-view.php';

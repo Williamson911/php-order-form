@@ -10,7 +10,13 @@
 </head>
 <body class="bg-dark text-light" >
 <div class="container">
-    <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
+    <div>
+        <img src="https://i.ibb.co/dJdycYy/banner.jpg" width="1000px" alt="banner" border="0">
+        <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
+
+    </div>
+
+
     <nav>
         <ul class="nav">
             <li class="nav-item">
@@ -78,7 +84,7 @@
             Express delivery (+ 5 EUR)
         </label>
 
-        <button type="submit" class="btn btn-primary">Order!</button>
+        <button type="submit" class="btn btn-warning">Order!</button>
     </form>
 
     <footer>You already ordered <strong id="target">&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.</footer>
