@@ -151,4 +151,4 @@ if (!isset($_COOKIE['totalSpent'])) {
     setcookie('totalSpent', (string) $value, time() + 5*24*3600);
 }
 
-require 'form-view.php';
+require 'src/form-view.php';
