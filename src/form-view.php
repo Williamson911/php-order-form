@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <title>Order Pizzas & drinks</title>
 </head>
-<body>
+<body class="bg-dark text-light" >
 <div class="container">
     <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
     <nav>
