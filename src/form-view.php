@@ -95,6 +95,5 @@
         text-align: center;
     }
 </style>
-<script src="./index.js"></script>
 </body>
 </html>
